@@ -3,17 +3,12 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/Safwanseban/Project-Microservices/broker-service/helpers"
 	"github.com/gin-gonic/gin"
 )
 
-type JsonREsponse struct {
-	Error   bool   `json:"error"`
-	Messege string `json:"messege"`
-	Data    any    `json:"data,omitempty"`
-}
-
 func HomeBroker(c *gin.Context) {
-	data := JsonREsponse{
+	data := helpers.JsonREsponse{
 		Error:   false,
 		Messege: "hit the broker",
 	}
@@ -26,6 +21,7 @@ func HomeBroker(c *gin.Context) {
 	// 	return
 	// }
 	// c.IndentedJSON()
+	
 	c.JSON(http.StatusAccepted, gin.H{
 		"msg": data,
 	})

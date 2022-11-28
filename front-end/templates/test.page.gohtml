@@ -39,7 +39,8 @@
             const body={
                 method: 'POST',
             }
-            fetch("http:/\/\/localhost:8080",body)
+            // fetch("http:/\/\/localhost:8080",body)
+            fetch("http://localhost:8080",body)
             .then((response)=>response.json())
             .then((data) => {
                 console.log(data);
