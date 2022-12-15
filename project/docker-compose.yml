@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   app:
     container_name: broker-service
@@ -11,3 +11,39 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  authentication-service:
+    build:
+      context: ./../authentication-service
+      dockerfile: ./../authentication-service/authentication-service.dockerfile
+    restart: always
+    ports:
+      - 8081:8086
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=safwan dbname=safwan password=Safwan@123 sslmode=disable"
+
+
+
+
+  postgres:
+    image: 'postgres:14.2'
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_USER=safwan
+      - POSTGRES_PASSWORD=Safwan@123
+     
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data/
+
+
+# su - postgres
+# psql -H postgres safwan
