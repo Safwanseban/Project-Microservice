@@ -1,44 +1,43 @@
 package main
 
 import (
-	"database/sql"
 	"log"
-	"net/http"
 
 	"github.com/Safwanseban/Project-Microservices/authentication-service/configs"
-	"github.com/Safwanseban/Project-Microservices/authentication-service/models"
+	"github.com/Safwanseban/Project-Microservices/authentication-service/routes"
 	"github.com/gin-gonic/gin"
-	_ "github.com/jackc/pgconn"
-	_ "github.com/jackc/pgx/stdlib"
-	_ "github.com/jackc/pgx/v4"
 )
+
+func init() {
+	configs.GetEnv()
+	configs.ConnecTodb()
+}
 
 var R = gin.Default()
 
 type Config struct {
-	R *gin.Engine
-	DB     *sql.DB
-	models models.Models
+	R      *gin.Engine
+
+
 }
 
 func main() {
 	log.Println("starting authentication service")
+	routes.Routes(R)
 
-	conn := configs.ConnecTodb()
-	if conn == nil {
-		log.Panic("error connceting to db")
-	}
-	app := Config{
-		DB:     conn,
-		models: models.New(conn),
-	}
-	srv := &http.Server{
-		Addr:    ":8086",
-		Handler: app.R,
-	}
+	R.Run(":8086")
+	// app := Config{
+	// 	DB:     conn,
+	// 	models: models.New(conn),
+	// }
+	// srv := &http.Server{
+	// 	Addr:    ":8086",
+	// 	Handler: app.R,
+	// }
 
-	err:=srv.ListenAndServe()
-	if err != nil {
-		log.Panic(err)
-	}
+	// err := srv.ListenAndServe()
+	// if err != nil {
+	// 	log.Panic(err)
+	// }
+
 }

@@ -2,10 +2,25 @@ package routes
 
 import (
 	"github.com/Safwanseban/Project-Microservices/authentication-service/controllers"
-	"github.com/Safwanseban/Project-Microservices/authentication-service/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT,OPTIONS")
+
+		// if c.Request.Method == "OPTIONS" {
+		// 	c.AbortWithStatus(204)
+		// 	return
+		// }
+
+		c.Next()
+	}
+}
+
 func Routes(ctx *gin.Engine) {
-	ctx.POST("/", middlewares.CORSMiddleware(), controllers.HomeBroker)
+	ctx.POST("/authenticate", CORSMiddleware(), controllers.Authenticate)
 }

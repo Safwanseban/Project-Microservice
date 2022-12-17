@@ -8,4 +8,6 @@ import (
 
 func Routes(ctx *gin.Engine) {
 	ctx.POST("/", middlewares.CORSMiddleware(), controllers.HomeBroker)
+	ctx.POST("/handle", middlewares.CORSMiddleware(), controllers.HandleSubmission)
+
 }
